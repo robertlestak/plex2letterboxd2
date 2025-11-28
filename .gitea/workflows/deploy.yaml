@@ -1,0 +1,20 @@
+name: deploy
+on: [push]
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+    - uses: azure/setup-kubectl@v4
+    - uses: azure/setup-helm@v4.3.0
+    - run: |
+        export KUBECONFIG=/tmp/kubeconfig
+        echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $KUBECONFIG
+        echo "KUBECONFIG=$KUBECONFIG" >> $GITHUB_ENV
+    - run: |
+        helm upgrade -n media plex2letterboxd2 ./helm/plex2letterboxd2 \
+          --install \
+          --set image.repository=registry.shdw.tech/plex2letterboxd2 \
+          --set image.pullPolicy=Always

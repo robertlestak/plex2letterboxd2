@@ -1,0 +1,21 @@
+image:
+  repository: plex2letterboxd2
+  tag: latest
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+schedule: "0 2 * * *"
+
+podAnnotations:
+  sidecar.istio.io/inject: "false"
+
+secretName: "plex2letterboxd2"
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 50m
+  #   memory: 64Mi
